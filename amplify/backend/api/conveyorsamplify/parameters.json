@@ -1,0 +1,13 @@
+{
+    "AppSyncApiName": "conveyorsamplify",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcognito6ce03764",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "schemaGraphql": "s3://conveyorsamplify-20190316124344-deployment/amplify-appsync-files/schema.graphql.1553113282500",
+    "ResolverBucket": "conveyorsamplify-20190316124344-deployment",
+    "ResolverRootKey": "amplify-appsync-files",
+    "DeploymentTimestamp": "1553113282500"
+}

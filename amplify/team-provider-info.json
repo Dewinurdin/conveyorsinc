@@ -1,0 +1,43 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "conveyorsamplify-20190302153605-authRole",
+            "UnauthRoleArn": "arn:aws:iam::301153384547:role/conveyorsamplify-20190302153605-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::301153384547:role/conveyorsamplify-20190302153605-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "conveyorsamplify-20190302153605-deployment",
+            "UnauthRoleName": "conveyorsamplify-20190302153605-unauthRole",
+            "StackName": "conveyorsamplify-20190302153605",
+            "StackId": "arn:aws:cloudformation:us-east-2:301153384547:stack/conveyorsamplify-20190302153605/2f7453d0-3d33-11e9-9eb7-0626229bfdda"
+        },
+        "categories": {
+            "auth": {
+                "cognito053da5c2": {}
+            }
+        }
+    },
+    "dvirginia": {
+        "awscloudformation": {
+            "AuthRoleName": "conveyorsamplify-20190316124344-authRole",
+            "UnauthRoleArn": "arn:aws:iam::301153384547:role/conveyorsamplify-20190316124344-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::301153384547:role/conveyorsamplify-20190316124344-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "conveyorsamplify-20190316124344-deployment",
+            "UnauthRoleName": "conveyorsamplify-20190316124344-unauthRole",
+            "StackName": "conveyorsamplify-20190316124344",
+            "StackId": "arn:aws:cloudformation:us-east-1:301153384547:stack/conveyorsamplify-20190316124344/0bf25480-4813-11e9-ac4f-0e8cd4caae34"
+        },
+        "categories": {
+            "auth": {
+                "cognito6ce03764": {}
+            },
+            "notifications": {
+                "Pinpoint": {
+                    "Name": "conveyorspinpoint-dvirginia",
+                    "Id": "8ae28c257414460f8267b4c70937c462",
+                    "Region": "us-east-1"
+                }
+            }
+        }
+    }
+}
