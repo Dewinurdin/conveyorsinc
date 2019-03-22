@@ -10,7 +10,7 @@ class SignIn extends Component {
     username: '',
     password: '',
     displayError: false,
-    message: '',
+    message: '', 
   }
   onChangeText = (key, value) => {
     this.setState({ [key]: value })
@@ -23,7 +23,7 @@ class SignIn extends Component {
       this.props.navigation.navigate('MainNav')
     } catch (err) {
       this.setState({ message: err.message, displayError: true })
-      console.log('error signing in...', err)
+      console.log('ERROR signing in: ', err)
     }
   }
   handleCloseNotification = () => { this.setState({ displayError: false }); }

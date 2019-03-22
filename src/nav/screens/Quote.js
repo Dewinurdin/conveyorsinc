@@ -3,21 +3,21 @@ import { Dimensions, TouchableOpacity, View, Text, StyleSheet, TextInput } from 
 import Input from '../../components/Input'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { Auth as AmplifyAuth } from 'aws-amplify'
-import AWSAppSyncClient from 'aws-appsync'
-import { Rehydrated } from 'aws-appsync-react'
-import { ApolloProvider as Provider } from 'react-apollo';
+// import { Auth } from 'aws-amplify'
+// import AWSAppSyncClient from 'aws-appsync'
+// import { Rehydrated } from 'aws-appsync-react'
+// import { ApolloProvider as Provider } from 'react-apollo';
 
-import awsconfig from '../../aws-exports'
+// import awsconfig from '../../aws-exports'
 
-const client = new AWSAppSyncClient({
-  url: awsconfig.aws_appsync_graphqlEndpoint,
-  region: awsconfig.aws_appsync_region,
-  auth: {
-    type: awsconfig.aws_appsync_authenticationType,
-    jwtToken: async () => ( await Auth.currentSession() ).idToken.jwtToken
-  }
-});
+// const client = new AWSAppSyncClient({
+//   url: awsconfig.aws_appsync_graphqlEndpoint,
+//   region: awsconfig.aws_appsync_region,
+//   auth: {
+//     type: awsconfig.aws_appsync_authenticationType,
+//     jwtToken: async () => ( await Auth.currentSession() ).idToken.jwtToken
+//   }
+// });
 
 const { width } = Dimensions.get('window')
 
@@ -32,8 +32,6 @@ class Quote extends React.Component {
 
   render() {
     return (
-      // <Provider client={client}>
-      //   <Rehydrated>
           <View style={styles.container}>
             <Text style={styles.title}>Please Fill Informations Below</Text>
             
@@ -84,9 +82,6 @@ class Quote extends React.Component {
             </TouchableOpacity>
         
           </View>
-      //   </Rehydrated>
-      // </Provider>
-
     )
   }
 }
