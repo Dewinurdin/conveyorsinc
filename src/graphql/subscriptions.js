@@ -3,7 +3,7 @@
 
 export const onCreateQuote = `subscription OnCreateQuote {
   onCreateQuote {
-    quoteId
+    id
     capacity
     angle
     length
@@ -15,7 +15,7 @@ export const onCreateQuote = `subscription OnCreateQuote {
 `;
 export const onUpdateQuote = `subscription OnUpdateQuote {
   onUpdateQuote {
-    quoteId
+    id
     capacity
     angle
     length
@@ -27,7 +27,7 @@ export const onUpdateQuote = `subscription OnUpdateQuote {
 `;
 export const onDeleteQuote = `subscription OnDeleteQuote {
   onDeleteQuote {
-    quoteId
+    id
     capacity
     angle
     length

@@ -3,7 +3,7 @@
 
 export const getQuote = `query GetQuote($id: ID!) {
   getQuote(id: $id) {
-    quoteId
+    id
     capacity
     angle
     length
@@ -20,7 +20,7 @@ export const listQuotes = `query ListQuotes(
 ) {
   listQuotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      quoteId
+      id
       capacity
       angle
       length

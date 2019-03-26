@@ -15,15 +15,6 @@ import { ApolloProvider as Provider } from 'react-apollo';
 import Amplify from 'aws-amplify'
 import awsconfig from './aws-exports'
 
-const client = new AWSAppSyncClient({
-  url: awsconfig.aws_appsync_graphqlEndpoint,
-  region: awsconfig.aws_appsync_region,
-  auth: {
-    type: awsconfig.aws_appsync_authenticationType,
-    jwtToken: async () => ( await Auth.currentSession() ).idToken.jwtToken
-  }
-});
-
 const AuthStackNavigator = createStackNavigator({
   Auth: { screen: Auth },
   SignIn: { screen: SignIn },
@@ -52,6 +43,15 @@ class App extends React.Component {
   } 
 
   render() {
+    const client = new AWSAppSyncClient({
+      url: awsconfig.aws_appsync_graphqlEndpoint,
+      region: awsconfig.aws_appsync_region,
+      auth: {
+        type: awsconfig.aws_appsync_authenticationType,
+        jwtToken: async () => ( await Auth.currentSession() ).idToken.jwtToken
+      }
+    });
+    
     return (
       <Provider client={client}>
         <Rehydrated>

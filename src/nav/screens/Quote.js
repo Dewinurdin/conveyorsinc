@@ -1,23 +1,23 @@
 import React from 'react'
 import { Dimensions, TouchableOpacity, View, Text, StyleSheet, TextInput } from 'react-native'
+
+import { graphql, compose } from 'react-apollo'
+import { buildSubscription } from 'aws-appsync'
+import { graphqlMutation } from 'aws-appsync-react'
+
 import Input from '../../components/Input'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-// import { Auth } from 'aws-amplify'
-// import AWSAppSyncClient from 'aws-appsync'
-// import { Rehydrated } from 'aws-appsync-react'
-// import { ApolloProvider as Provider } from 'react-apollo';
+import gql from 'graphql-tag';
+import AWSAppSyncClient from 'aws-appsync';
+import { AUTH_TYPE } from 'aws-appsync';
+import aws_config from '../../aws-exports';
+import { Auth } from 'aws-amplify'
 
-// import awsconfig from '../../aws-exports'
 
-// const client = new AWSAppSyncClient({
-//   url: awsconfig.aws_appsync_graphqlEndpoint,
-//   region: awsconfig.aws_appsync_region,
-//   auth: {
-//     type: awsconfig.aws_appsync_authenticationType,
-//     jwtToken: async () => ( await Auth.currentSession() ).idToken.jwtToken
-//   }
-// });
+import { listQuotes } from '../../graphql/queries'
+import { createQuoteMutation } from '../../graphql/mutations'
+import { onCreateQuote } from '../../graphql/subscriptions'
 
 const { width } = Dimensions.get('window')
 
@@ -25,66 +25,152 @@ class Quote extends React.Component {
   static navigationOptions = {
     title: 'RFQ'
   }
-
-  onChangeText = (key, value) => {
-    this.setState({ [key]: value })
+  state = {
+    identity: '',
+    userEmail: '',
+    capacity: '',
+    angle: '',
+    length: '',
+    loading: '',
+    material: '',
+    extrainfos: '',
+    username: '',
+  }
+  componentDidMount() {
+    Auth.currentAuthenticatedUser()
+      .then(user => {
+        this.setState({ identity: user.signInUserSession.accessToken.payload })
+        this.setState({ userEmail: user.attributes.email })
+        this.setState({ username: user.username })
+      })
   }
 
+  onChangeText = (key, value) => { this.setState({ [key]: value })
+    
+  // createQuote = () => {
+  //   this.props.createQuote(this.state)
+  //   const { identity, userEmail, capacity, angle, length, loading, material, extrainfos } = this.state;
+  //   this.setState({ capacity: '', angle: '', length: '', loading: '', material: '', extrainfos: '' })
+  //   }
+  // export default compose(
+  //   graphql(AddCityMutation, {
+  //     props: props => ({
+  //       onAdd: city => props.mutate({
+  //         variables: city
+  //       })
+  //     })
+  //   })
+  // )(AddCity)
+
+  createQuote = (async () => {
+      const { username, capacity, angle, length, loading, material, extrainfos } = this.state;
+      this.setState({ capacity, angle, length, loading, material, extrainfos })
+
+      // const result = graphql(createQuoteMutation, {
+      //   props: props => ({
+      //     onAdd: quote => props.mutate({
+      //       variables: {
+      //         input: {
+      //           username, userEmail, capacity, angle, length, loading, material, extrainfos
+      //         }    
+      //       }
+      //     })
+      //   })
+      // })
+      // console.log(result);
+
+      const result = await client.mutate({
+        mutation: gql(createQuoteMutation),
+        variables: {
+          input: {
+            capacity, angle, length, loading, material, extrainfos
+          }
+        }
+      });
+      console.log(result.data);
+    })
+  }
   render() {
+    console.log(this.state)
+    console.log(Auth.currentCredentials())
+
     return (
-          <View style={styles.container}>
-            <Text style={styles.title}>Please Fill Informations Below</Text>
-            
-            <Text onPress={() => this.props.navigation.navigate('Support')}>Go to Support</Text>
-
-            <TextInput placeholder='Capacity'
-              style={styles.input}
-              placeholderTextColor='#90caf9'
-              selectionColor={'#1565c0'}
-              onChangeText={this.onChangeText}      
-            />
-            <TextInput placeholder='Angle'
-              style={styles.input}
-              placeholderTextColor='#90caf9'
-                selectionColor={'#1565c0'}
-                onChangeText={this.onChangeText}     
-              />
-              <TextInput placeholder='Length'
-                style={styles.input}
-                placeholderTextColor='#90caf9'
-                selectionColor={'#1565c0'}
-                onChangeText={this.onChangeText}      
-              />
-              <TextInput placeholder='Loading'
-                style={styles.input}
-                placeholderTextColor='#90caf9'
-                selectionColor={'#1565c0'}
-                onChangeText={this.onChangeText}
-              />
-              <TextInput placeholder='Material'
-                style={styles.input}
-                placeholderTextColor='#90caf9'
-                selectionColor={'#1565c0'}
-                onChangeText={this.onChangeText}
-              />
-              <TextInput placeholder='Extra Informations'
-                style={styles.extrainfos}
-                placeholderTextColor='#90caf9'
-                selectionColor={'#1565c0'}
-                onChangeText={this.onChangeText}
-              />
-
-              <TouchableOpacity
-                style={styles.button}
-                onPress={this.onPress}
-              >
-              <Text style={styles.buttontext}> Submit </Text>
-            </TouchableOpacity>
+      <View style={styles.container}>
+        <Text style={styles.title}>Please Fill Informations Below</Text>
         
-          </View>
+        <TextInput placeholder='Capacity'
+          style={styles.input}
+          placeholderTextColor='#90caf9'
+          selectionColor={'#1565c0'}
+          onChangeText={value => this.onChangeText('capacity', value)}      
+        />
+        <TextInput placeholder='Angle'
+          style={styles.input}
+          placeholderTextColor='#90caf9'
+          selectionColor={'#1565c0'}
+          onChangeText={value => this.onChangeText('angle', value)}      
+          />
+          <TextInput placeholder='Length'
+            style={styles.input}
+            placeholderTextColor='#90caf9'
+            selectionColor={'#1565c0'}
+            onChangeText={value => this.onChangeText('length', value)}      
+            />
+          <TextInput placeholder='Loading'
+            style={styles.input}
+            placeholderTextColor='#90caf9'
+            selectionColor={'#1565c0'}
+            onChangeText={value => this.onChangeText('loading', value)}      
+            />
+          <TextInput placeholder='Material'
+            style={styles.input}
+            placeholderTextColor='#90caf9'
+            selectionColor={'#1565c0'}
+            onChangeText={value => this.onChangeText('material', value)}      
+            />
+          <TextInput placeholder='Extra Informations'
+            style={styles.extrainfos}
+            placeholderTextColor='#90caf9'
+            selectionColor={'#1565c0'}
+            onChangeText={value => this.onChangeText('extrainfos', value)}      
+            />
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.createQuote}
+          >
+          <Text style={styles.buttontext}> Submit </Text>
+        </TouchableOpacity>
+    
+      </View>
     )
   }
 }
+
+// const WithData = compose(
+//   graphqlMutation(createQuote, listQuotes, 'Quote'),
+//   graphql(listQuotes, {
+//     options: {
+//       fetchPolicy: 'cache-and-network'
+//     },
+//     props: props => ({
+//       createQuote: quote => props.mutate({
+//         variables: quote,
+//         optimisticResponse: {
+//           __typename: 'Mutation',
+//           createQuote: { ...quote, __typename: 'Quote'}
+//         },
+//         update: (proxy, { data: { createQuote } }) => {
+//           const data = proxy.readQuery({ query: listQuotes })
+//           let stopExecuting = false
+//           if (item.id === createQuote.id) {
+//             stopExecuting = true
+//           }
+//         }
+//       })
+//     })
+//   })
+// )(Quote)
 
 
 const styles = StyleSheet.create({

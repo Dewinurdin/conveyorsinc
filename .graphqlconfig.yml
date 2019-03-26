@@ -1,5 +1,5 @@
 projects:
-  conveyorsamplify:
+  conveyorsApi:
     schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js
@@ -10,7 +10,7 @@ projects:
         codeGenTarget: javascript
         generatedFileName: ''
         docsFilePath: src/graphql
-        graphQLApiId: xlmgb6negnbtrewlwvj3v6z6ua
+        graphQLApiId: 2prmd3ksgvgybejrox2lxburwe
       endpoints:
         prod: >-
-          https://ushiy2jvojdupgq3f27pwwrdmm.appsync-api.us-east-1.amazonaws.com/graphql
+          https://tl4kge64mncefddb4atv7qecuq.appsync-api.us-east-1.amazonaws.com/graphql

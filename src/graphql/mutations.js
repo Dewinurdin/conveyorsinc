@@ -3,7 +3,7 @@
 
 export const createQuote = `mutation CreateQuote($input: CreateQuoteInput!) {
   createQuote(input: $input) {
-    quoteId
+    id
     capacity
     angle
     length
@@ -15,7 +15,7 @@ export const createQuote = `mutation CreateQuote($input: CreateQuoteInput!) {
 `;
 export const updateQuote = `mutation UpdateQuote($input: UpdateQuoteInput!) {
   updateQuote(input: $input) {
-    quoteId
+    id
     capacity
     angle
     length
@@ -27,7 +27,7 @@ export const updateQuote = `mutation UpdateQuote($input: UpdateQuoteInput!) {
 `;
 export const deleteQuote = `mutation DeleteQuote($input: DeleteQuoteInput!) {
   deleteQuote(input: $input) {
-    quoteId
+    id
     capacity
     angle
     length

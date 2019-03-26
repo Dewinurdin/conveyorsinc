@@ -7,7 +7,7 @@ import {
 import { Icon } from 'react-native-elements'
 
 import Home from './screens/Home'
-import Quote from './screens/Quote'
+import QuoteWithData from './screens/Quote'
 import Support from './screens/Support'
 import ChangePassword from './screens/ChangePassword'
 import SettingScreen from './screens/SettingScreen'
@@ -18,7 +18,7 @@ import SignOut from '../nav/auth/SignOut'
 // Bottom HOME Tab Navigator
 const HomeTabNavigator = createBottomTabNavigator({
   Home: { screen: Home },
-  Quote: { screen: Quote },
+  Quote: { screen: QuoteWithData },
   Support: { screen: Support },
   Settings: SettingScreen,
 }, {
@@ -102,7 +102,7 @@ const AppStackNavigator = createStackNavigator({
 // DRAWER NAVIGATOR
 const MainNav = createDrawerNavigator({
   Home: { screen: AppStackNavigator },
-  Quote: { screen: Quote },
+  Quote: { screen: QuoteWithData },
   Support: { screen: Support },
   Settings: { screen: SettingScreen },
 });

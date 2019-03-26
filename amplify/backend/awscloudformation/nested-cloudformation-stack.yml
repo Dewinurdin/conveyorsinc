@@ -143,22 +143,22 @@
 				}
 			}
 		},
-		"apiconveyorsamplify": {
+		"apiconveyorsApi": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
 				"TemplateURL": "https://s3.amazonaws.com/conveyorsamplify-20190316124344-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"Parameters": {
-					"AppSyncApiName": "conveyorsamplify",
+					"AppSyncApiName": "conveyorsApi",
 					"AuthCognitoUserPoolId": {
 						"Fn::GetAtt": [
 							"authcognito6ce03764",
 							"Outputs.UserPoolId"
 						]
 					},
-					"schemaGraphql": "s3://conveyorsamplify-20190316124344-deployment/amplify-appsync-files/schema.graphql.1553113282500",
+					"schemaGraphql": "s3://conveyorsamplify-20190316124344-deployment/amplify-appsync-files/schema.graphql.1553611760095",
 					"ResolverBucket": "conveyorsamplify-20190316124344-deployment",
 					"ResolverRootKey": "amplify-appsync-files",
-					"DeploymentTimestamp": "1553113282500",
+					"DeploymentTimestamp": "1553611760095",
 					"env": "dvirginia"
 				}
 			}
