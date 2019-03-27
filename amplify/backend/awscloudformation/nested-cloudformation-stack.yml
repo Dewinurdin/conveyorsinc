@@ -155,10 +155,10 @@
 							"Outputs.UserPoolId"
 						]
 					},
-					"schemaGraphql": "s3://conveyorsamplify-20190316124344-deployment/amplify-appsync-files/schema.graphql.1553626816298",
+					"schemaGraphql": "s3://conveyorsamplify-20190316124344-deployment/amplify-appsync-files/schema.graphql.1553715736469",
 					"ResolverBucket": "conveyorsamplify-20190316124344-deployment",
 					"ResolverRootKey": "amplify-appsync-files",
-					"DeploymentTimestamp": "1553626816298",
+					"DeploymentTimestamp": "1553715736469",
 					"env": "dvirginia"
 				}
 			}

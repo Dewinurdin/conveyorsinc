@@ -1,25 +1,13 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
-export const getQuote = `query GetQuote($id: ID!) {
-  getQuote(id: $id) {
+export const getUser = `query GetUser($id: ID!) {
+  getUser(id: $id) {
     id
-    capacity
-    angle
-    length
-    loading
-    material
-    extrainfos
-  }
-}
-`;
-export const listQuotes = `query ListQuotes(
-  $filter: ModelQuoteFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listQuotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
+    username
+    email
+    registered
+    quote {
       id
       capacity
       angle
@@ -27,8 +15,19 @@ export const listQuotes = `query ListQuotes(
       loading
       material
       extrainfos
+      createdAt
+      file {
+        bucket
+        region
+        key
+      }
+      user {
+        id
+        username
+        email
+        registered
+      }
     }
-    nextToken
   }
 }
 `;

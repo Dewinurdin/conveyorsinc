@@ -1,6 +1,66 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
+export const onCreateUser = `subscription OnCreateUser {
+  onCreateUser {
+    id
+    username
+    email
+    registered
+    quote {
+      id
+      capacity
+      angle
+      length
+      loading
+      material
+      extrainfos
+      createdAt
+      file {
+        bucket
+        region
+        key
+      }
+      user {
+        id
+        username
+        email
+        registered
+      }
+    }
+  }
+}
+`;
+export const onUpdateUser = `subscription OnUpdateUser {
+  onUpdateUser {
+    id
+    username
+    email
+    registered
+    quote {
+      id
+      capacity
+      angle
+      length
+      loading
+      material
+      extrainfos
+      createdAt
+      file {
+        bucket
+        region
+        key
+      }
+      user {
+        id
+        username
+        email
+        registered
+      }
+    }
+  }
+}
+`;
 export const onCreateQuote = `subscription OnCreateQuote {
   onCreateQuote {
     id
@@ -10,30 +70,28 @@ export const onCreateQuote = `subscription OnCreateQuote {
     loading
     material
     extrainfos
-  }
-}
-`;
-export const onUpdateQuote = `subscription OnUpdateQuote {
-  onUpdateQuote {
-    id
-    capacity
-    angle
-    length
-    loading
-    material
-    extrainfos
-  }
-}
-`;
-export const onDeleteQuote = `subscription OnDeleteQuote {
-  onDeleteQuote {
-    id
-    capacity
-    angle
-    length
-    loading
-    material
-    extrainfos
+    createdAt
+    file {
+      bucket
+      region
+      key
+    }
+    user {
+      id
+      username
+      email
+      registered
+      quote {
+        id
+        capacity
+        angle
+        length
+        loading
+        material
+        extrainfos
+        createdAt
+      }
+    }
   }
 }
 `;
