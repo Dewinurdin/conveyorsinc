@@ -155,37 +155,46 @@
 							"Outputs.UserPoolId"
 						]
 					},
-					"schemaGraphql": "s3://conveyorsamplify-20190316124344-deployment/amplify-appsync-files/schema.graphql.1553611760095",
+					"schemaGraphql": "s3://conveyorsamplify-20190316124344-deployment/amplify-appsync-files/schema.graphql.1553626816298",
 					"ResolverBucket": "conveyorsamplify-20190316124344-deployment",
 					"ResolverRootKey": "amplify-appsync-files",
-					"DeploymentTimestamp": "1553611760095",
+					"DeploymentTimestamp": "1553626816298",
 					"env": "dvirginia"
 				}
 			}
 		},
-		"analyticsconveyorspinpoint": {
+		"apilambdaemailquote": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/conveyorsamplify-20190316124344-deployment/amplify-cfn-templates/analytics/pinpoint-cloudformation-template.json",
+				"TemplateURL": "https://s3.amazonaws.com/conveyorsamplify-20190316124344-deployment/amplify-cfn-templates/api/lambdaemailquote-cloudformation-template.json",
 				"Parameters": {
-					"appName": "conveyorspinpoint",
-					"roleName": "pinpointLambdaRole408f9d3a",
-					"cloudWatchPolicyName": "cloudWatchPolicy408f9d3a",
-					"pinpointPolicyName": "pinpointPolicy408f9d3a",
-					"authPolicyName": "pinpoint_amplify_408f9d3a",
-					"unauthPolicyName": "pinpoint_amplify_408f9d3a",
 					"authRoleName": {
 						"Ref": "AuthRoleName"
 					},
 					"unauthRoleName": {
 						"Ref": "UnauthRoleName"
 					},
-					"authRoleArn": {
+					"functionlambdaSendQuoteEmailName": {
 						"Fn::GetAtt": [
-							"AuthRole",
-							"Arn"
+							"functionlambdaSendQuoteEmail",
+							"Outputs.Name"
 						]
 					},
+					"functionlambdaSendQuoteEmailArn": {
+						"Fn::GetAtt": [
+							"functionlambdaSendQuoteEmail",
+							"Outputs.Arn"
+						]
+					},
+					"env": "dvirginia"
+				}
+			}
+		},
+		"functionlambdaSendQuoteEmail": {
+			"Type": "AWS::CloudFormation::Stack",
+			"Properties": {
+				"TemplateURL": "https://s3.amazonaws.com/conveyorsamplify-20190316124344-deployment/amplify-cfn-templates/function/lambdaSendQuoteEmail-cloudformation-template.json",
+				"Parameters": {
 					"env": "dvirginia"
 				}
 			}

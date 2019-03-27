@@ -45,7 +45,7 @@ class App extends React.Component {
   render() {
     const client = new AWSAppSyncClient({
       url: awsconfig.aws_appsync_graphqlEndpoint,
-      region: awsconfig.aws_appsync_region,
+      region: awsconfig.aws_appsync_graphqlEndpoint,
       auth: {
         type: awsconfig.aws_appsync_authenticationType,
         jwtToken: async () => ( await Auth.currentSession() ).idToken.jwtToken

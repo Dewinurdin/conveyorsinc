@@ -1,22 +1,15 @@
 import React from 'react'
 import { Dimensions, TouchableOpacity, View, Text, StyleSheet, TextInput } from 'react-native'
-
-import { graphql, compose } from 'react-apollo'
-import { buildSubscription } from 'aws-appsync'
-import { graphqlMutation } from 'aws-appsync-react'
-
-import Input from '../../components/Input'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import gql from 'graphql-tag';
-import AWSAppSyncClient from 'aws-appsync';
-import { AUTH_TYPE } from 'aws-appsync';
-import aws_config from '../../aws-exports';
-import { Auth } from 'aws-amplify'
+import { Auth, API, graphqlOperation } from 'aws-amplify'
+import { buildSubscription } from 'aws-appsync'
+import { graphqlMutation } from 'aws-appsync-react'
+import { graphql, compose } from 'react-apollo'
 
-
+import Input from '../../components/Input'
 import { listQuotes } from '../../graphql/queries'
-import { createQuoteMutation } from '../../graphql/mutations'
+import { createQuote, deleteQuote } from '../../graphql/mutations'
 import { onCreateQuote } from '../../graphql/subscriptions'
 
 const { width } = Dimensions.get('window')
@@ -36,113 +29,99 @@ class Quote extends React.Component {
     extrainfos: '',
     username: '',
   }
+
   componentDidMount() {
-    Auth.currentAuthenticatedUser()
+    const currentUserCredentials = Auth.currentAuthenticatedUser()
       .then(user => {
         this.setState({ identity: user.signInUserSession.accessToken.payload })
         this.setState({ userEmail: user.attributes.email })
         this.setState({ username: user.username })
-      })
-  }
+      });
+    }
 
-  onChangeText = (key, value) => { this.setState({ [key]: value })
+    onChangeText = (key, value) => this.setState({ [key]: value })
     
-  // createQuote = () => {
-  //   this.props.createQuote(this.state)
-  //   const { identity, userEmail, capacity, angle, length, loading, material, extrainfos } = this.state;
-  //   this.setState({ capacity: '', angle: '', length: '', loading: '', material: '', extrainfos: '' })
-  //   }
-  // export default compose(
-  //   graphql(AddCityMutation, {
-  //     props: props => ({
-  //       onAdd: city => props.mutate({
-  //         variables: city
-  //       })
-  //     })
-  //   })
-  // )(AddCity)
+    // Submit Form Create Quote
+    handleCreateQuote = async () => {
+      const { capacity, angle, length, loading, material, extrainfos } = this.state;
+      const input = { capacity, angle, length, loading, material, extrainfos }
+      try {
+      await API.graphql(graphqlOperation(createQuote, { input }))
+      console.log('Quote successfully Created')
+      } catch (err){
+      console.log("Error Submitting Form: ", err)
+      }
+    }
 
-  createQuote = (async () => {
-      const { username, capacity, angle, length, loading, material, extrainfos } = this.state;
-      this.setState({ capacity, angle, length, loading, material, extrainfos })
-
-      // const result = graphql(createQuoteMutation, {
-      //   props: props => ({
-      //     onAdd: quote => props.mutate({
-      //       variables: {
-      //         input: {
-      //           username, userEmail, capacity, angle, length, loading, material, extrainfos
-      //         }    
-      //       }
-      //     })
-      //   })
-      // })
-      // console.log(result);
-
-      const result = await client.mutate({
-        mutation: gql(createQuoteMutation),
-        variables: {
-          input: {
+    // LAMBDA SEND QUOTE EMAIL
+    handleSendEmail = async () => {
+      const { capacity, angle, length, loading, material, extrainfos } = this.state;
+      try {
+        const result = await API.post('lambdaemailquote', '/email', {
+          body: {
             capacity, angle, length, loading, material, extrainfos
           }
-        }
-      });
-      console.log(result.data);
-    })
-  }
-  render() {
-    console.log(this.state)
-    console.log(Auth.currentCredentials())
+        })
+        console.log(result)
+      } catch (err) {
+        console.error(err)
+      }
+    }
 
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Please Fill Informations Below</Text>
-        
-        <TextInput placeholder='Capacity'
-          style={styles.input}
-          placeholderTextColor='#90caf9'
-          selectionColor={'#1565c0'}
-          onChangeText={value => this.onChangeText('capacity', value)}      
-        />
-        <TextInput placeholder='Angle'
-          style={styles.input}
-          placeholderTextColor='#90caf9'
-          selectionColor={'#1565c0'}
-          onChangeText={value => this.onChangeText('angle', value)}      
+    render() {
+      const { identity } = this.state;
+      console.log("Current User: ", identity)
+      // console.log(Auth.currentCredentials())
+
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>Please Fill Informations Below</Text>
+          
+          <TextInput placeholder='Capacity'
+            style={styles.input}
+            placeholderTextColor='#90caf9'
+            selectionColor={'#1565c0'}
+            onChangeText={value => this.onChangeText('capacity', value)}      
           />
-          <TextInput placeholder='Length'
+          <TextInput placeholder='Angle'
             style={styles.input}
             placeholderTextColor='#90caf9'
             selectionColor={'#1565c0'}
-            onChangeText={value => this.onChangeText('length', value)}      
+            onChangeText={value => this.onChangeText('angle', value)}      
             />
-          <TextInput placeholder='Loading'
-            style={styles.input}
-            placeholderTextColor='#90caf9'
-            selectionColor={'#1565c0'}
-            onChangeText={value => this.onChangeText('loading', value)}      
-            />
-          <TextInput placeholder='Material'
-            style={styles.input}
-            placeholderTextColor='#90caf9'
-            selectionColor={'#1565c0'}
-            onChangeText={value => this.onChangeText('material', value)}      
-            />
-          <TextInput placeholder='Extra Informations'
-            style={styles.extrainfos}
-            placeholderTextColor='#90caf9'
-            selectionColor={'#1565c0'}
-            onChangeText={value => this.onChangeText('extrainfos', value)}      
-            />
+            <TextInput placeholder='Length'
+              style={styles.input}
+              placeholderTextColor='#90caf9'
+              selectionColor={'#1565c0'}
+              onChangeText={value => this.onChangeText('length', value)}      
+              />
+            <TextInput placeholder='Loading'
+              style={styles.input}
+              placeholderTextColor='#90caf9'
+              selectionColor={'#1565c0'}
+              onChangeText={value => this.onChangeText('loading', value)}      
+              />
+            <TextInput placeholder='Material'
+              style={styles.input}
+              placeholderTextColor='#90caf9'
+              selectionColor={'#1565c0'}
+              onChangeText={value => this.onChangeText('material', value)}      
+              />
+            <TextInput placeholder='Extra Informations'
+              style={styles.extrainfos}
+              placeholderTextColor='#90caf9'
+              selectionColor={'#1565c0'}
+              onChangeText={value => this.onChangeText('extrainfos', value)}      
+              />
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.createQuote}
-          >
-          <Text style={styles.buttontext}> Submit </Text>
-        </TouchableOpacity>
-    
-      </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.handleSendEmail}
+            >
+            <Text style={styles.buttontext}> Submit </Text>
+          </TouchableOpacity>
+      
+        </View>
     )
   }
 }

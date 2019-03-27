@@ -12,18 +12,35 @@
 			"output": {
 				"securityType": "AMAZON_COGNITO_USER_POOLS"
 			}
+		},
+		"lambdaemailquote": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "lambdaSendQuoteEmail",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
 		}
 	},
-	"analytics": {
-		"conveyorspinpoint": {
-			"service": "Pinpoint",
-			"providerPlugin": "awscloudformation"
-		}
-	},
+	"analytics": {},
 	"notifications": {
 		"conveyorspinpoint-dvirginia": {
 			"service": "Pinpoint",
 			"channels": []
+		}
+	},
+	"function": {
+		"lambdaSendQuoteEmail": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": []
 		}
 	}
 }
