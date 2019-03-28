@@ -7,6 +7,7 @@ import { buildSubscription } from 'aws-appsync'
 import { graphqlMutation } from 'aws-appsync-react'
 import { graphql, compose } from 'react-apollo'
 
+import { UserContext } from '../../context/userContext'
 import Input from '../../components/Input'
 import { listQuotes } from '../../graphql/queries'
 import { createQuote, deleteQuote } from '../../graphql/mutations'
@@ -20,7 +21,7 @@ class Quote extends React.Component {
   }
   state = {
     identity: '',
-    userEmail: '',
+    email: '',
     capacity: '',
     angle: '',
     length: '',
@@ -30,50 +31,56 @@ class Quote extends React.Component {
     username: '',
   }
 
-  componentDidMount() {
-    const currentUserCredentials = Auth.currentAuthenticatedUser()
-      .then(user => {
-        this.setState({ identity: user.signInUserSession.accessToken.payload })
-        this.setState({ userEmail: user.attributes.email })
-        this.setState({ username: user.username })
-      });
-    }
+  async componentDidMount() {
+    const user = await Auth.currentAuthenticatedUser()
+    this.setState({ identity: user.signInUserSession.accessToken.payload })
+    // this.setState({ owner: user.username })
+    this.setState({ username: user })
+    this.setState({ email: user.attributes.email })
+  }
 
     onChangeText = (key, value) => this.setState({ [key]: value })
     
     // Submit Form Create Quote
-    handleCreateQuote = async () => {
-      const { capacity, angle, length, loading, material, extrainfos } = this.state;
-      const input = { capacity, angle, length, loading, material, extrainfos }
-      try {
-      await API.graphql(graphqlOperation(createQuote, { input }))
-      console.log('Quote successfully Created')
-      } catch (err){
-      console.log("Error Submitting Form: ", err)
-      }
-    }
+    // handleCreateQuote = async () => {
+    //   const { capacity, angle, length, loading, material, extrainfos, owner } = this.state;
+    //   const input = { capacity, angle, length, loading, material, extrainfos, owner }
+    //   try {
+    //   await API.graphql(graphqlOperation(createQuote, { input }))
+    //   console.log('Quote successfully Created')
+    //   } catch (err){
+    //   console.log("Error Submitting Form: ", err)
+    //   }
+    // }
 
     // LAMBDA SEND QUOTE EMAIL
-    handleSendEmail = async () => {
-      const { capacity, angle, length, loading, material, extrainfos } = this.state;
+    handleSendEmail = async user => {
+      const { capacity, angle, length, loading, material, extrainfos, owner } = this.state;
+      const input = { capacity, angle, length, loading, material, extrainfos, owner }
+
       try {
-        const result = await API.post('lambdaemailquote', '/email', {
-          body: {
-            capacity, angle, length, loading, material, extrainfos
-          }
-        })
-        console.log(result)
+        // this.setState({ })
+        const graphqlResult = await API.graphql(graphqlOperation(createQuote, { input }))
+
+        // const result = await API.post('lambdaemailquote', '/email', {
+        //   body: {
+        //     capacity, angle, length, loading, material, extrainfos, owner
+        //   }
+        // })
+        console.log("Successfully send Quote API: ", graphqlResult)
       } catch (err) {
-        console.error(err)
+        console.error('Error Submitting Form: ', err)
       }
     }
 
     render() {
       const { identity } = this.state;
       console.log("Current User: ", identity)
-      // console.log(Auth.currentCredentials())
-
+      console.log("Username: ", this.state.username)
+      console.log("Email: ", this.state.email)
       return (
+        <UserContext.Consumer>
+          {({ user }) =>
         <View style={styles.container}>
           <Text style={styles.title}>Please Fill Informations Below</Text>
           
@@ -116,12 +123,14 @@ class Quote extends React.Component {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={this.handleSendEmail}
+              onPress={()=> this.handleSendEmail(user)}
             >
             <Text style={styles.buttontext}> Submit </Text>
           </TouchableOpacity>
       
         </View>
+        }
+        </UserContext.Consumer>
     )
   }
 }

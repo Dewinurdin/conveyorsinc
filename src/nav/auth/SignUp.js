@@ -1,8 +1,8 @@
 import React, { Fragment, Component } from 'react'
 import { Keyboard, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Auth } from 'aws-amplify'
 
 import { Input, ActionButton, Notification } from '../../components'
-import { Auth } from 'aws-amplify'
 import colors from '../../styles/colors'
 
 class SignUp extends Component {
@@ -23,17 +23,6 @@ class SignUp extends Component {
     this.setState({ [key]: value })
   }
   signUp = async () => {
-  //   Auth.signUp({
-  //     'username': 'jdoe',
-  //     'password': 'mysecurerandompassword#123',
-  //     'attributes': {
-  //         'email': 'me@domain.com',
-  //         'phone_number': '+12128601234', // E.164 number convention
-  //         'given_name': 'Jane',
-  //         'family_name': 'Doe',
-  //         'nickname': 'Jane'
-  //     }
-  // });
     const {
       given_name, family_name, username, password, email, phone_number
     } = this.state
@@ -63,81 +52,81 @@ class SignUp extends Component {
     const { message, displayError } = this.state
 
     return (
-            <View style={styles.container}>
+      <View style={styles.container}>
+        {
+          this.state.stage === Number(0) && (
+            <Fragment>
+              <Input
+                placeholder='First Name'
+                type='given_name'
+                onChangeText={this.onChangeText}
+              />
+              <Input
+                placeholder='Last Name'
+                type='family_name'
+                onChangeText={this.onChangeText}
+              />
+              <Input
+                placeholder='Username'
+                type='username'
+                onChangeText={this.onChangeText}
+              />
+              <Input
+                placeholder='Password'
+                type='password'
+                onChangeText={this.onChangeText}
+                secureTextEntry
+              />
+              <Input
+                placeholder='Email'
+                type='email'
+                onChangeText={this.onChangeText}
+              />
+              <ActionButton
+                title='Sign Up'
+                onPress={this.signUp}
+              />
               {
-                this.state.stage === Number(0) && (
-                  <Fragment>
-                    <Input
-                      placeholder='First Name'
-                      type='given_name'
-                      onChangeText={this.onChangeText}
-                    />
-                    <Input
-                      placeholder='Last Name'
-                      type='family_name'
-                      onChangeText={this.onChangeText}
-                    />
-                    <Input
-                      placeholder='Username'
-                      type='username'
-                      onChangeText={this.onChangeText}
-                    />
-                    <Input
-                      placeholder='Password'
-                      type='password'
-                      onChangeText={this.onChangeText}
-                      secureTextEntry
-                    />
-                    <Input
-                      placeholder='Email'
-                      type='email'
-                      onChangeText={this.onChangeText}
-                    />
-                    <ActionButton
-                      title='Sign Up'
-                      onPress={this.signUp}
-                    />
-                    {
-                      displayError === true ?
-                      <Notification 
-                        type="Error"
-                        message={message}
-                        handleCloseNotification={this.handleCloseNotification}
-                      />
-                      : null
-                    }
-                    <Fragment>
-                      <Text style={styles.bottomMessage}>Already signed up? <Text
-                      style={styles.bottomMessageHighlight}  onPress={this.toggleAuthType}>&nbsp;&nbsp;Sign In</Text>
-                      </Text>
-                    </Fragment>
-
-
-                  </Fragment>
-                )
+                displayError === true ?
+                <Notification 
+                  type="Error"
+                  message={message}
+                  handleCloseNotification={this.handleCloseNotification}
+                />
+                : null
               }
-              {
-                this.state.stage === Number(1) && (
-                  <Fragment>
-                    <Input
-                      placeholder='Confirmation Code'
-                      type='authCode'
-                      onChangeText={this.onChangeText}
-                    />
-                    <Notification 
-                      message="Please check your email for Confirmation Code"
-                      style={styles.notificationContainer}
-                      handleCloseNotification={this.handleCloseNotification}
-                    />
+              <Fragment>
+                <Text style={styles.bottomMessage}>Already signed up? <Text
+                style={styles.bottomMessageHighlight}  onPress={this.toggleAuthType}>&nbsp;&nbsp;Sign In</Text>
+                </Text>
+              </Fragment>
 
-                    <ActionButton
-                      title='Confirm Sign Up'
-                      onPress={this.confirmSignUp}
-                    />
-                  </Fragment>
-                )
-              }
-            </View>
+
+            </Fragment>
+          )
+        }
+        {
+          this.state.stage === Number(1) && (
+            <Fragment>
+              <Input
+                placeholder='Confirmation Code'
+                type='authCode'
+                onChangeText={this.onChangeText}
+              />
+              <Notification 
+                message="Please check your email for Confirmation Code"
+                style={styles.notificationContainer}
+                handleCloseNotification={this.handleCloseNotification}
+              />
+
+              <ActionButton
+                title='Confirm Sign Up'
+                onPress={this.confirmSignUp}
+              />
+            </Fragment>
+          )
+        }
+      </View>
     )
   }
 }

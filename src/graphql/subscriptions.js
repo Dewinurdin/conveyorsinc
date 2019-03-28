@@ -9,6 +9,7 @@ export const onCreateUser = `subscription OnCreateUser {
     registered
     quote {
       id
+      owner
       capacity
       angle
       length
@@ -39,6 +40,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
     registered
     quote {
       id
+      owner
       capacity
       angle
       length
@@ -64,6 +66,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
 export const onCreateQuote = `subscription OnCreateQuote {
   onCreateQuote {
     id
+    owner
     capacity
     angle
     length
@@ -83,6 +86,7 @@ export const onCreateQuote = `subscription OnCreateQuote {
       registered
       quote {
         id
+        owner
         capacity
         angle
         length

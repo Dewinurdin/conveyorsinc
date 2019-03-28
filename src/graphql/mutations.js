@@ -9,6 +9,7 @@ export const registerUser = `mutation RegisterUser($input: CreateUserInput!) {
     registered
     quote {
       id
+      owner
       capacity
       angle
       length
@@ -39,6 +40,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     registered
     quote {
       id
+      owner
       capacity
       angle
       length
@@ -64,6 +66,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
 export const createQuote = `mutation CreateQuote($input: CreateQuoteInput!) {
   createQuote(input: $input) {
     id
+    owner
     capacity
     angle
     length
@@ -83,6 +86,7 @@ export const createQuote = `mutation CreateQuote($input: CreateQuoteInput!) {
       registered
       quote {
         id
+        owner
         capacity
         angle
         length

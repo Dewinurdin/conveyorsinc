@@ -9,6 +9,7 @@ export const getUser = `query GetUser($id: ID!) {
     registered
     quote {
       id
+      owner
       capacity
       angle
       length
