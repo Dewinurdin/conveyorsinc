@@ -9,9 +9,11 @@ import { graphql, compose } from 'react-apollo'
 
 import { UserContext } from '../../context/userContext'
 import Input from '../../components/Input'
-import { listQuotes } from '../../graphql/queries'
-import { createQuote, deleteQuote } from '../../graphql/mutations'
+import { getUser } from '../../graphql/queries'
+import { createQuote } from '../../graphql/mutations'
 import { onCreateQuote } from '../../graphql/subscriptions'
+
+import colors from '../../styles/colors'
 
 const { width } = Dimensions.get('window')
 
@@ -20,7 +22,12 @@ class Quote extends React.Component {
     title: 'RFQ'
   }
   state = {
+    user: '',
     identity: '',
+    userid: '',
+    username: '',
+    given_name: '',
+    family_name: '',
     email: '',
     capacity: '',
     angle: '',
@@ -28,61 +35,66 @@ class Quote extends React.Component {
     loading: '',
     material: '',
     extrainfos: '',
-    username: '',
+    submitted: false,
   }
 
   async componentDidMount() {
     const user = await Auth.currentAuthenticatedUser()
+    this.setState({ user: user })
     this.setState({ identity: user.signInUserSession.accessToken.payload })
-    // this.setState({ owner: user.username })
-    this.setState({ username: user })
+    this.setState({ userid: user.signInUserSession.accessToken.payload.sub })
+    this.setState({ username: user.username })
+    this.setState({ given_name: user.attributes.given_name })
+    this.setState({ family_name: user.attributes.family_name })
     this.setState({ email: user.attributes.email })
   }
 
     onChangeText = (key, value) => this.setState({ [key]: value })
     
-    // Submit Form Create Quote
-    // handleCreateQuote = async () => {
-    //   const { capacity, angle, length, loading, material, extrainfos, owner } = this.state;
-    //   const input = { capacity, angle, length, loading, material, extrainfos, owner }
-    //   try {
-    //   await API.graphql(graphqlOperation(createQuote, { input }))
-    //   console.log('Quote successfully Created')
-    //   } catch (err){
-    //   console.log("Error Submitting Form: ", err)
-    //   }
-    // }
-
-    // LAMBDA SEND QUOTE EMAIL
     handleSendEmail = async user => {
-      const { capacity, angle, length, loading, material, extrainfos, owner } = this.state;
-      const input = { capacity, angle, length, loading, material, extrainfos, owner }
-
+      // GET FORM DATA & CREATE QUOTE
+      const { capacity, angle, length, loading, material, extrainfos, email, userid, username, given_name, family_name } = this.state;
+      const input = { capacity, angle, length, loading, material, extrainfos }
       try {
-        // this.setState({ })
+        // CREATE
         const graphqlResult = await API.graphql(graphqlOperation(createQuote, { input }))
+        const ownerEmail = email
 
-        // const result = await API.post('lambdaemailquote', '/email', {
-        //   body: {
-        //     capacity, angle, length, loading, material, extrainfos, owner
-        //   }
-        // })
-        console.log("Successfully send Quote API: ", graphqlResult)
+        const lambdaResult = await API.post('lambdaemailquote', '/email', {
+          body: {
+            capacity, angle, length, loading, material, extrainfos, email: {ownerEmail}, profile: {given_name, family_name}
+  
+          },
+          email: {
+            ownerEmail
+          },
+          profile: {
+            given_name, family_name
+          }
+        })
+        this.setState({ submitted: true })
+        console.log("Successfully CREATED GraphQL Quote API: ", graphqlResult)
+        console.log("Successfully send Lambda Quote API: ", lambdaResult)
       } catch (err) {
         console.error('Error Submitting Form: ', err)
       }
     }
 
     render() {
-      const { identity } = this.state;
-      console.log("Current User: ", identity)
-      console.log("Username: ", this.state.username)
-      console.log("Email: ", this.state.email)
+      const { identity, given_name, family_name, email, user, submitted } = this.state;
+      // console.log("USER MOUNTED: ", user)
+      // console.log("Current User: ", identity)
+      // console.log("Username: ", this.state.username)
+      // console.log("First Name: ", given_name)
+      // console.log("Last Name: ", family_name)
+      // console.log("Email: ", email)
+      // console.log("User ID: ", identity.sub)
+
       return (
         <UserContext.Consumer>
           {({ user }) =>
         <View style={styles.container}>
-          <Text style={styles.title}>Please Fill Informations Below</Text>
+          <Text style={styles.title}>Please provide informations:</Text>
           
           <TextInput placeholder='Capacity'
             style={styles.input}
@@ -135,53 +147,26 @@ class Quote extends React.Component {
   }
 }
 
-// const WithData = compose(
-//   graphqlMutation(createQuote, listQuotes, 'Quote'),
-//   graphql(listQuotes, {
-//     options: {
-//       fetchPolicy: 'cache-and-network'
-//     },
-//     props: props => ({
-//       createQuote: quote => props.mutate({
-//         variables: quote,
-//         optimisticResponse: {
-//           __typename: 'Mutation',
-//           createQuote: { ...quote, __typename: 'Quote'}
-//         },
-//         update: (proxy, { data: { createQuote } }) => {
-//           const data = proxy.readQuery({ query: listQuotes })
-//           let stopExecuting = false
-//           if (item.id === createQuote.id) {
-//             stopExecuting = true
-//           }
-//         }
-//       })
-//     })
-//   })
-// )(Quote)
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 10
+    backgroundColor: colors.lightGreyBackground,
+    padding: 8
   },
   title: {
-    fontSize: 23,
+    fontSize: 22,
     marginTop: 10,
     marginBottom: 20,
-    padding: 10,
+    padding: 8,
     fontFamily: 'SourceSansPro-SemiBold',
   },
   input: {
-    backgroundColor: '#e3f2fd',
-    borderRadius: 5,
+    backgroundColor: colors.white,
+    borderRadius: 3,
     height: 45,
     width: width - 20,
-    marginBottom: 20,
+    marginBottom: 10,
     fontSize: 16,
     paddingHorizontal: 14,
     fontFamily: 'SourceSansPro-Regular',
@@ -191,22 +176,22 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     backgroundColor: '#4169E1',
-    padding: 10,
-    borderRadius: 30,
-    width: '94%',
+    padding: 8,
+    borderRadius: 8,
+    width: '95%',
     height: 50,
     marginTop: 8,
   },
   buttontext: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 19,
     fontWeight: '500',
     padding: 6,
     alignItems: 'center',
   },
   extrainfos: {
-    backgroundColor: '#e3f2fd',
-    borderRadius: 5,
+    backgroundColor: colors.white,
+    borderRadius: 3,
     height: 115,
     width: width - 20,
     marginBottom: 20,

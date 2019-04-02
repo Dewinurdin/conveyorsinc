@@ -18,7 +18,7 @@ import SignOut from '../nav/auth/SignOut'
 // Bottom HOME Tab Navigator
 const HomeTabNavigator = createBottomTabNavigator({
   Home: { screen: Home },
-  Quote: { screen: QuoteWithData },
+  RFQ: { screen: QuoteWithData },
   Support: { screen: Support },
   Settings: SettingScreen,
 }, {
@@ -30,7 +30,7 @@ const HomeTabNavigator = createBottomTabNavigator({
       let iconName;
       if (routeName === 'Home') {
         iconName = `home`;
-      } else if (routeName === 'Quote') {
+      } else if (routeName === 'RFQ') {
         iconName = `forum`;
       } else if (routeName === 'Support') {
         iconName = `phone`;

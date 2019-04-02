@@ -5,6 +5,8 @@ export const registerUser = `mutation RegisterUser($input: CreateUserInput!) {
   registerUser(input: $input) {
     id
     username
+    given_name
+    family_name
     email
     registered
     quote {
@@ -25,8 +27,10 @@ export const registerUser = `mutation RegisterUser($input: CreateUserInput!) {
       user {
         id
         username
+        given_name
+        family_name
         email
-        registered
+        registered 
       }
     }
   }
@@ -36,6 +40,8 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
     id
     username
+    given_name
+    family_name
     email
     registered
     quote {
@@ -56,6 +62,8 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
       user {
         id
         username
+        given_name
+        family_name
         email
         registered
       }
@@ -82,6 +90,8 @@ export const createQuote = `mutation CreateQuote($input: CreateQuoteInput!) {
     user {
       id
       username
+      given_name
+      family_name
       email
       registered
       quote {

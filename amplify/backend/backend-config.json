@@ -1,46 +1,46 @@
 {
-	"auth": {
-		"cognito6ce03764": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation"
-		}
-	},
-	"api": {
-		"conveyorsApi": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"securityType": "AMAZON_COGNITO_USER_POOLS"
-			}
-		},
-		"lambdaemailquote": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "lambdaSendQuoteEmail",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			]
-		}
-	},
-	"analytics": {},
-	"notifications": {
-		"conveyorspinpoint-dvirginia": {
-			"service": "Pinpoint",
-			"channels": []
-		}
-	},
-	"function": {
-		"lambdaSendQuoteEmail": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true,
-			"dependsOn": []
-		}
-	}
+    "auth": {
+        "cognito6ce03764": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation"
+        }
+    },
+    "api": {
+        "conveyorsApi": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "securityType": "AMAZON_COGNITO_USER_POOLS"
+            }
+        },
+        "lambdaemailquote": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "lambdaSendQuoteEmail",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ]
+                }
+            ]
+        }
+    },
+    "analytics": {},
+    "notifications": {
+        "conveyorspinpoint-dvirginia": {
+            "service": "Pinpoint",
+            "channels": []
+        }
+    },
+    "function": {
+        "lambdaSendQuoteEmail": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true,
+            "dependsOn": []
+        }
+    }
 }

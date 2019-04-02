@@ -23,17 +23,6 @@ class ChangePassword extends React.Component {
     onChangeText = (key, value) => {
       this.setState({ [key]: value })
     }
-    // signIn = async () => {
-    //   const { username, password } = this.state
-    //   try {
-    //     await Auth.signIn(username, password)
-    //     console.log('successfully signed in')
-    //     this.props.navigation.navigate('MainNav')
-    //   } catch (err) {
-    //     this.setState({ displayError: true })
-    //     console.log('error signing up...', err)
-    //   }
-    // }
     
     handleChangePassword = async () => {
       const { oldPassword, newPassword, currentUser, userEmail } = this.state

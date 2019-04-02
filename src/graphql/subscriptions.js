@@ -5,6 +5,8 @@ export const onCreateUser = `subscription OnCreateUser {
   onCreateUser {
     id
     username
+    given_name
+    family_name
     email
     registered
     quote {
@@ -25,6 +27,8 @@ export const onCreateUser = `subscription OnCreateUser {
       user {
         id
         username
+        given_name
+        family_name
         email
         registered
       }
@@ -36,6 +40,8 @@ export const onUpdateUser = `subscription OnUpdateUser {
   onUpdateUser {
     id
     username
+    given_name
+    family_name
     email
     registered
     quote {
@@ -56,6 +62,8 @@ export const onUpdateUser = `subscription OnUpdateUser {
       user {
         id
         username
+        given_name
+        family_name
         email
         registered
       }
@@ -82,6 +90,8 @@ export const onCreateQuote = `subscription OnCreateQuote {
     user {
       id
       username
+      given_name
+      family_name
       email
       registered
       quote {

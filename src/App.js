@@ -78,11 +78,13 @@ class App extends React.Component {
         const registerUserInput = {
           ...getUserInput,
           username: signInData.username,
+          given_name: signInData.signInUserSession.idToken.payload.given_name,
+          family_name: signInData.signInUserSession.idToken.payload.family_name,
           email: signInData.signInUserSession.idToken.payload.email,
           registered: true
         }
         const newUser = await API.graphql(graphqlOperation(registerUser, { input: registerUserInput }))
-        console.log(newUser)
+        console.log("New User:  ", newUser)
       }
       catch (err) {
         console.error("Error Registering new user: ", err)

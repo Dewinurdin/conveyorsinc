@@ -27,7 +27,6 @@ class Auth extends Component {
   }
   render() {
     const { showSignUp, showForgetPassword, showSignIn } = this.state
-    console.log(this.state)
     return (
       <View style={styles.wrapper}>
         <View style={styles.header}>

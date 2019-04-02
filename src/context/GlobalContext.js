@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 
 import UserContext from './userContext';
 
+// GLOBAL CONTEXT API 
+// ***** BUILDING IN PROGRESS *****
+
 class GlobalState extends Component {
   state = {
     given_name: '',

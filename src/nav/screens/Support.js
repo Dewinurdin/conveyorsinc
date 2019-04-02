@@ -14,65 +14,6 @@ class Support extends React.Component {
     title: 'Support'
   }
 
-  // onPressCall() {
-    // const url = 'telprompt:18176925536';
-  //   Linking.canOpenURL(url)
-  //     .then((supported) => {
-  //       if (supported) {
-  //         return Linking.openURL(url)
-  //         console.log(url)
-  //           .catch(() => null);
-  //       }
-  //     });
-  // }
-  // componentDidMount() {
-    // const url = 'telprompt:18176925536';
-  //   Linking.getInitialURL().then((url) => {
-  //     if (url) {
-  //       console.log('Initial url is: ' + url);
-  //     }
-  //   }).catch(err => console.error('An error occurred', err));
-  // }
-  // // Cancel Call
-  // componentWillUnmount() {
-  //   Linking.removeEventListener('url', this._handleOpenURL);
-  // }
-
-  // _handleOpenURL(event) {
-  //   console.log(event.url);
-  // }
-
-  // onPressCall = () => {
-  //   const url = 'telprompt:18176925536';
-  //   Linking.canOpenURL(url)
-  //   .then((supported) => {
-  //     if (!supported) {
-  //       console.log("Can't handle url: " + url);
-  //     } else {
-  //       return Linking.openURL(url);
-  //     }
-  //   })
-  // .catch((err) => console.error('An error occurred', err));
-  // }
-
-  // onPressEmail = () => {
-  //   const url = 'telprompt:18176925536';
-  //   Linking.canOpenURL(url)
-  //   .then((supported) => {
-  //     if (!supported) {
-  //       console.log("Can't handle url: " + url);
-  //     } else {
-  //       return Linking.openURL(url);
-  //     }
-  //   })
-  // .catch((err) => console.error('An error occurred', err));
-  // }
-
-  // _pressCall=()=>{
-  //   const url='tel://18176925536'
-  //   Linking.openURL(url)
-  // }
-
   render() {
     return (
     <View style={styles.mainContainer}>
@@ -94,20 +35,15 @@ class Support extends React.Component {
 
         <View style={[ styles.container, styles.bodyContainer, styles.call ]}>
           <Icon name="phone-square" size={40} style={styles.icon}/>
-          <Text style={styles.text} onPress={this.onPressCall}>817.473.4645</Text>
+          {/* IOS */}
+          <Text style={styles.text} onPress={() => {Linking.openURL('8174734645')}}>817.473.4645</Text>
         </View>
 
         <View style={[ styles.container, styles.bodyContainer, styles.email ]}>
           <Icon name="envelope" size={40} style={styles.icon}/>
-          <Text style={styles.text} onPress={this.onPressEmail}>sales@conveyorsinc.net</Text>
+          <Text style={styles.text} onPress={() => Linking.openURL('mailto:sales@conveyorsinc.net') }
+            title="sales@conveyorsinc.net">sales@conveyorsinc.net</Text>
         </View>
-
-        {/* <View style={[ styles.bodyContainer, styles.address ]}>
-          <Icon name="building" size={40} style={styles.icon}/>
-          <Text style={styles.text}>620 S. Fourth Ave.</Text>
-          <Text style={styles.text}>Mansfield, TX 76063</Text>
-        </View> */}
-
     </View>
     )
   }
@@ -143,10 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginTop: 6,
     borderRadius: 10,
-    // shadowColor: 'black', 
-    // borderBottomWidth: 2,
     shadowColor: '#f5f5f5', 
-    // shadowWidth: 10
   },
   call: {
     flex: 1,

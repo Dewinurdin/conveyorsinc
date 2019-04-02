@@ -5,7 +5,9 @@ export const getUser = `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
     username
-    email
+    given_name
+    family_name
+    email 
     registered
     quote {
       id
@@ -25,6 +27,8 @@ export const getUser = `query GetUser($id: ID!) {
       user {
         id
         username
+        given_name
+        family_name
         email
         registered
       }
