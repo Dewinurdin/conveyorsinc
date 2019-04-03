@@ -777,7 +777,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "DeleteQuoteInput",
+        "name" : "DeleteUserInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -907,7 +907,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "DeleteUserInput",
+        "name" : "DeleteQuoteInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {

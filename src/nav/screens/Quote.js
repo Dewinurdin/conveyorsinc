@@ -89,59 +89,61 @@ class Quote extends React.Component {
       // console.log("Last Name: ", family_name)
       // console.log("Email: ", email)
       // console.log("User ID: ", identity.sub)
-
+      if (submitted === true) {
+        return <Text>Quote Request Successfully Submitted!</Text>
+      }
       return (
         <UserContext.Consumer>
           {({ user }) =>
-        <View style={styles.container}>
-          <Text style={styles.title}>Please provide informations:</Text>
-          
-          <TextInput placeholder='Capacity'
-            style={styles.input}
-            placeholderTextColor='#90caf9'
-            selectionColor={'#1565c0'}
-            onChangeText={value => this.onChangeText('capacity', value)}      
-          />
-          <TextInput placeholder='Angle'
-            style={styles.input}
-            placeholderTextColor='#90caf9'
-            selectionColor={'#1565c0'}
-            onChangeText={value => this.onChangeText('angle', value)}      
-            />
-            <TextInput placeholder='Length'
-              style={styles.input}
-              placeholderTextColor='#90caf9'
-              selectionColor={'#1565c0'}
-              onChangeText={value => this.onChangeText('length', value)}      
+            <View style={styles.container}>
+              <Text style={styles.title}>Please provide informations:</Text>
+              
+              <TextInput placeholder='Capacity'
+                style={styles.input}
+                placeholderTextColor='#90caf9'
+                selectionColor={'#1565c0'}
+                onChangeText={value => this.onChangeText('capacity', value)}      
               />
-            <TextInput placeholder='Loading'
-              style={styles.input}
-              placeholderTextColor='#90caf9'
-              selectionColor={'#1565c0'}
-              onChangeText={value => this.onChangeText('loading', value)}      
-              />
-            <TextInput placeholder='Material'
-              style={styles.input}
-              placeholderTextColor='#90caf9'
-              selectionColor={'#1565c0'}
-              onChangeText={value => this.onChangeText('material', value)}      
-              />
-            <TextInput placeholder='Extra Informations'
-              style={styles.extrainfos}
-              placeholderTextColor='#90caf9'
-              selectionColor={'#1565c0'}
-              onChangeText={value => this.onChangeText('extrainfos', value)}      
-              />
+              <TextInput placeholder='Angle'
+                style={styles.input}
+                placeholderTextColor='#90caf9'
+                selectionColor={'#1565c0'}
+                onChangeText={value => this.onChangeText('angle', value)}      
+                />
+                <TextInput placeholder='Length'
+                  style={styles.input}
+                  placeholderTextColor='#90caf9'
+                  selectionColor={'#1565c0'}
+                  onChangeText={value => this.onChangeText('length', value)}      
+                  />
+                <TextInput placeholder='Loading'
+                  style={styles.input}
+                  placeholderTextColor='#90caf9'
+                  selectionColor={'#1565c0'}
+                  onChangeText={value => this.onChangeText('loading', value)}      
+                  />
+                <TextInput placeholder='Material'
+                  style={styles.input}
+                  placeholderTextColor='#90caf9'
+                  selectionColor={'#1565c0'}
+                  onChangeText={value => this.onChangeText('material', value)}      
+                  />
+                <TextInput placeholder='Extra Informations'
+                  style={styles.extrainfos}
+                  placeholderTextColor='#90caf9'
+                  selectionColor={'#1565c0'}
+                  onChangeText={value => this.onChangeText('extrainfos', value)}      
+                  />
 
-            <TouchableOpacity
-              style={styles.button}
-              onPress={()=> this.handleSendEmail(user)}
-            >
-            <Text style={styles.buttontext}> Submit </Text>
-          </TouchableOpacity>
-      
-        </View>
-        }
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={()=> this.handleSendEmail(user)}
+                >
+                <Text style={styles.buttontext}> Submit </Text>
+              </TouchableOpacity>
+          
+            </View>
+          }
         </UserContext.Consumer>
     )
   }
